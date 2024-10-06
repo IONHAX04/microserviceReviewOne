@@ -1,0 +1,14 @@
+{
+    "local": {
+        "currentDomain": "ublis.testing",
+        "firebase-project": ""
+    },
+    "testing": {
+        "currentDomain": "ublis.testing",
+        "firebase-project": ""
+    },
+    "production": {
+        "currentDomain": "ublis.testing",
+        "firebase-project": ""
+    }
+}
