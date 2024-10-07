@@ -1,26 +1,31 @@
-// INSERT QUERY
 export const insertUserQuery = `
-  INSERT INTO "UBLIS".ublisUsers (
-    "refStId",
-    "refStEmail",
-    "refStPassword",
-    "refStHashedPassword",
-    "refStFName",
-    "refStLName",
-    "refStDOB",
-    "refStAge",
-    "refStCreatedAt",
-    "refStCreatedBy",
-    "refStUpdatedAt",
-    "refStUpdatedBy",
-    "refStUserStatus",
-    "refStIsActive",
-    "refSignUpDate",
-    "refUtHistory",
-    "refStCustId",
-    "refUtId"
-  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING *`;
+  INSERT INTO public.users (
+    "refStFName", "refStLName", "refStDOB", "refStAge", 
+    "refSCreatedAt", "refSCreatedBy", "refSUserStatus", "refSIsActive", 
+    "refSignupDate", "refSCustId"
+  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
+  RETURNING "refStId", "refSCustId";
+`;
 
-// SELECT QUERY FOR LOGIN
+export const insertUserDomainQuery = `
+  INSERT INTO public."refUsersDomain" (
+    "refStId", "refCustId", "refCustPrimEmail", "refCustPassword", 
+    "refCustHashedPassword", "refUserCreatedAt", "refUserCreatedBy"
+  ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+  RETURNING *;
+`;
+
 export const selectUserQuery = `
-  SELECT * FROM "UBLIS".ublisUsers WHERE "refStCustId" = $1`;
+  SELECT * FROM public."refUsersDomain" 
+  WHERE "refCustId" = $1;
+`;
+
+
+export const selectUserByEmailQuery = `
+  SELECT u."refStId", u."refSCustId", u."refStFName", u."refStLName", u."refSUserStatus", 
+         ud."refCustPrimEmail", ud."refCustHashedPassword"
+  FROM public.users u
+  JOIN public."refUsersDomain" ud
+    ON u."refStId" = ud."refStId"
+  WHERE ud."refCustPrimEmail" = $1;
+`;
